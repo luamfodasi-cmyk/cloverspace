@@ -4,271 +4,113 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CloverSpace</title>
-
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-
-body{
-  min-height:100vh;
-  background:linear-gradient(135deg,#06140d,#0b3520,#06140d);
-  color:white;
-  display:flex;
-  justify-content:center;
-  padding:25px;
-}
-
-.container{width:100%;max-width:500px}
-
-.logo{text-align:center;font-size:60px}
-
-h1{text-align:center;font-size:38px;margin:5px 0 25px}
-.green{color:#43e879}
-
-.card{
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:22px;
-  padding:25px;
-  margin-bottom:15px;
-}
-
-input{
-  width:100%;
-  padding:14px;
-  margin:6px 0;
-  border:0;
-  border-radius:12px;
-  background:rgba(0,0,0,.3);
-  color:white;
-}
-
-button{
-  width:100%;
-  padding:14px;
-  margin-top:10px;
-  border:0;
-  border-radius:12px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.primary{background:#43e879;color:#06200f}
-.secondary{background:rgba(255,255,255,.1);color:white}
-
-.hidden{display:none}
-
-.profile{
-  text-align:center;
-}
-
-.avatar{
-  width:90px;
-  height:90px;
-  margin:auto;
-  border-radius:50%;
-  background:#43e879;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:40px;
-  color:#06200f;
-}
-
-.name{
-  font-size:25px;
-  font-weight:bold;
-  margin-top:12px;
-}
-
-.verified{
-  color:#43e879;
-  font-size:20px;
-  margin-left:5px;
-}
-
-.badge{
-  display:inline-block;
-  margin-top:8px;
-  padding:6px 12px;
-  border-radius:20px;
-  background:rgba(67,232,121,.15);
-  color:#43e879;
-  font-size:13px;
-}
+body{margin:0;background:#101014;color:white;font-family:Arial}
+header{padding:20px;background:#19191f;text-align:center}
+.logo{font-size:28px;color:#70ff91;font-weight:bold}
+nav{display:flex;gap:8px;padding:12px;overflow:auto;background:#19191f}
+button{padding:12px;border:0;border-radius:10px;background:#292930;color:white}
+main{max-width:700px;margin:auto;padding:15px}
+.card{background:#19191f;padding:20px;border-radius:16px;margin-bottom:15px}
+input{width:100%;padding:13px;box-sizing:border-box;border-radius:10px;border:1px solid #333;background:#101014;color:white;margin:10px 0}
+.avatar{width:80px;height:80px;border-radius:50%;background:#70ff91;color:#101014;display:flex;align-items:center;justify-content:center;font-size:35px;font-weight:bold}
+.verificado{color:#70ff91;font-weight:bold}
+.escondido{display:none}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header>
+<div class="logo">🌿 CloverSpace</div>
+<p>Seu espaço para conectar pessoas</p>
+</header>
 
-<div class="logo">🌿</div>
-<h1>Clover<span class="green">Space</span></h1>
+<nav>
+<button onclick="abrir('inicio')">🏠 Início</button>
+<button onclick="abrir('perfil')">👤 Perfil</button>
+<button onclick="abrir('amigos')">👥 Amigos</button>
+<button onclick="abrir('grupos')">👨‍👩‍👧 Grupos</button>
+<button onclick="abrir('mensagens')">💬 Chat</button>
+<button onclick="abrir('call')">📞 Call</button>
+</nav>
 
-<div id="inicio" class="card">
+<main>
 
-<h2>Bem-vindo 👋</h2>
-
-<button class="primary" onclick="mostrar('cadastro')">
-🚀 Criar minha conta
-</button>
-
-<button class="secondary" onclick="mostrar('login')">
-🔐 Entrar
-</button>
-
+<section id="inicio">
+<div class="card">
+<h1>Bem-vindo ao CloverSpace 🌿</h1>
+<p>Conheça pessoas, faça amigos e participe de grupos.</p>
+<button onclick="abrir('perfil')">Ver meu perfil</button>
 </div>
+</section>
 
-<div id="cadastro" class="card hidden">
-
-<h2>Criar conta</h2>
-
-<input id="nome" placeholder="Seu nome">
-<input id="email" placeholder="Seu e-mail">
-<input id="senha" type="password" placeholder="Sua senha">
-
-<button class="primary" onclick="cadastrar()">
-Criar conta
-</button>
-
-<button class="secondary" onclick="mostrar('inicio')">
-Voltar
-</button>
-
-<p id="msgCadastro"></p>
-
+<section id="perfil" class="escondido">
+<div class="card">
+<div class="avatar">L</div>
+<h2>Luam</h2>
+<p class="verificado">✓ Perfil verificado</p>
+<p>🟢 Online</p>
+<button onclick="alert('Editar perfil')">✏️ Editar</button>
+<button onclick="alert('Perfil compartilhado!')">🔗 Compartilhar</button>
 </div>
+</section>
 
-<div id="login" class="card hidden">
-
-<h2>Entrar</h2>
-
-<input id="emailLogin" placeholder="Seu e-mail">
-<input id="senhaLogin" type="password" placeholder="Sua senha">
-
-<button class="primary" onclick="entrar()">
-Entrar
-</button>
-
-<button class="secondary" onclick="mostrar('inicio')">
-Voltar
-</button>
-
-<p id="msgLogin"></p>
-
+<section id="amigos" class="escondido">
+<div class="card">
+<h2>👥 Amigos</h2>
+<p>Você ainda não possui amigos.</p>
+<button onclick="alert('Procurando pessoas...')">➕ Adicionar amigo</button>
 </div>
+</section>
 
-<div id="perfil" class="card hidden profile">
-
-<div class="avatar">👤</div>
-
-<div class="name">
-<span id="nomePerfil"></span>
-<span class="verified">✓</span>
+<section id="grupos" class="escondido">
+<div class="card">
+<h2>👨‍👩‍👧 Grupos</h2>
+<p>Crie ou encontre grupos.</p>
+<button onclick="alert('Criar grupo')">➕ Criar grupo</button>
+<button onclick="alert('Procurando grupos...')">🔎 Procurar</button>
 </div>
+</section>
 
-<div class="badge">
-✓ Verificado
+<section id="mensagens" class="escondido">
+<div class="card">
+<h2>💬 Chat</h2>
+<input id="texto" placeholder="Digite uma mensagem">
+<button onclick="enviar()">Enviar</button>
+<div id="chat"></div>
 </div>
+</section>
 
-<p style="margin-top:10px;color:#aaa">
-👑 Administrador do CloverSpace
-</p>
-
-<button class="primary">
-👥 Amigos
-</button>
-
-<button class="primary">
-💬 Conversas
-</button>
-
-<button class="primary">
-🎙️ Salas de voz
-</button>
-
-<button class="primary">
-🌎 Comunidades
-</button>
-
-<button class="secondary" onclick="sair()">
-Sair
-</button>
-
+<section id="call" class="escondido">
+<div class="card">
+<h2>📞 Call em grupo</h2>
+<p>Entre em uma sala de chamada.</p>
+<button onclick="alert('Sala de chamada criada!')">📞 Entrar na call</button>
+<button onclick="alert('Convite copiado!')">🔗 Convidar</button>
 </div>
+</section>
 
-</div>
+</main>
 
 <script>
-
-function mostrar(id){
-  document.querySelectorAll(".card")
-    .forEach(x=>x.classList.add("hidden"));
-
-  document.getElementById(id)
-    .classList.remove("hidden");
+function abrir(id){
+document.querySelectorAll("main section").forEach(x=>x.classList.add("escondido"));
+document.getElementById(id).classList.remove("escondido");
 }
 
-async function cadastrar(){
+function enviar(){
+let campo=document.getElementById("texto");
+let texto=campo.value.trim();
 
-  const nome=document.getElementById("nome").value;
-  const email=document.getElementById("email").value;
-  const senha=document.getElementById("senha").value;
+if(texto=="")return;
 
-  const resposta=await fetch("/api/register",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      username:email,
-      password:senha
-    })
-  });
+let mensagem=document.createElement("p");
+mensagem.textContent="💬 Você: "+texto;
 
-  const dados=await resposta.json();
-
-  if(!resposta.ok){
-    document.getElementById("msgCadastro").textContent=dados.error;
-    return;
-  }
-
-  localStorage.setItem("cloverNome",nome);
-
-  alert("Conta criada com sucesso!");
-  mostrar("login");
+document.getElementById("chat").appendChild(mensagem);
+campo.value="";
 }
-
-async function entrar(){
-
-  const email=document.getElementById("emailLogin").value;
-  const senha=document.getElementById("senhaLogin").value;
-
-  const resposta=await fetch("/api/login",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      username:email,
-      password:senha
-    })
-  });
-
-  const dados=await resposta.json();
-
-  if(!resposta.ok){
-    document.getElementById("msgLogin").textContent=dados.error;
-    return;
-  }
-
-  const nome=localStorage.getItem("cloverNome") || dados.user.username;
-
-  document.getElementById("nomePerfil").textContent=nome;
-
-  mostrar("perfil");
-}
-
-function sair(){
-  mostrar("inicio");
-}
-
 </script>
 
 </body>
