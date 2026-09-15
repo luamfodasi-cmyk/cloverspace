@@ -1692,6 +1692,91 @@ io.on("connection", socket => {
 
 
 io.on("connection", (socket) => {
+  // CLOVERSPACE VOICE SIGNALING
+  socket.on("voice:join", ({roomId, username}) => {
+    if(!roomId || !username) return;
+    socket.join("voice:"+roomId);
+    socket.data.voiceRoom=roomId;
+    socket.data.voiceUsername=username;
+    socket.to("voice:"+roomId).emit("voice:user-joined",{
+      id:socket.id, username
+    });
+  });
+
+  socket.on("voice:offer", ({to,offer}) => {
+    if(to && offer) io.to(to).emit("voice:offer",{
+      from:socket.id,offer
+    });
+  });
+
+  socket.on("voice:answer", ({to,answer}) => {
+    if(to && answer) io.to(to).emit("voice:answer",{
+      from:socket.id,answer
+    });
+  });
+
+  socket.on("voice:ice", ({to,candidate}) => {
+    if(to && candidate) io.to(to).emit("voice:ice",{
+      from:socket.id,candidate
+    });
+  });
+
+  socket.on("voice:leave", () => {
+    const r=socket.data.voiceRoom;
+    if(r) socket.to("voice:"+r).emit("voice:user-left",{id:socket.id});
+    if(r) socket.leave("voice:"+r);
+    socket.data.voiceRoom=null;
+  });
+
+  // CLOVERSPACE VOICE WEBRTC
+  socket.on("voice:join", ({ roomId, username }) => {
+    if (!roomId || !username) return;
+
+    socket.join("voice:" + roomId);
+    socket.data.voiceRoom = roomId;
+    socket.data.voiceUsername = username;
+
+    socket.to("voice:" + roomId).emit("voice:user-joined", {
+      id: socket.id,
+      username
+    });
+  });
+
+  socket.on("voice:offer", ({ to, offer }) => {
+    if (!to || !offer) return;
+    io.to(to).emit("voice:offer", {
+      from: socket.id,
+      offer
+    });
+  });
+
+  socket.on("voice:answer", ({ to, answer }) => {
+    if (!to || !answer) return;
+    io.to(to).emit("voice:answer", {
+      from: socket.id,
+      answer
+    });
+  });
+
+  socket.on("voice:ice", ({ to, candidate }) => {
+    if (!to || !candidate) return;
+    io.to(to).emit("voice:ice", {
+      from: socket.id,
+      candidate
+    });
+  });
+
+  socket.on("voice:leave", () => {
+    const roomId = socket.data.voiceRoom;
+    if (roomId) {
+      socket.to("voice:" + roomId).emit("voice:user-left", {
+        id: socket.id
+      });
+      socket.leave("voice:" + roomId);
+    }
+    socket.data.voiceRoom = null;
+  });
+
   socket.on("join-room", ({ roomId, username }) => {
     if (!roomId || !username) return;
     socket.join(roomId);
