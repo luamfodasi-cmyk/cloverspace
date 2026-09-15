@@ -1,292 +1,155 @@
-<!-- COLE ESTE CÓDIGO NO ARQUIVO: public/index.html -->
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CloverSpace</title>
-<script src="/socket.io/socket.io.js"></script>
 
 <style>
+*{box-sizing:border-box}
 body{
   margin:0;
+  background:#09060f;
+  color:#fff;
   font-family:Arial,sans-serif;
-  color:white;
-  background:
-  radial-gradient(circle at top,#35105c,#10051c 55%,#05020a);
 }
-
-header{
-  padding:20px;
-  display:flex;
-  justify-content:space-between;
-  border-bottom:1px solid #6d2ba0;
-}
-
-.logo{
-  font-size:24px;
-  font-weight:bold;
-  text-shadow:0 0 15px #b000ff;
-}
-
-.logo span{color:#00eaff}
-
-main{
-  max-width:600px;
-  margin:auto;
-  padding:20px 15px 100px;
-}
-
-h1{
-  text-shadow:0 0 15px #e000ff;
-}
-
+main{max-width:600px;margin:auto;padding:20px}
+h1{color:#c77dff}
 .card{
-  background:#1b0d2b;
-  border:1px solid #7130a0;
+  background:#151020;
+  border:1px solid #332342;
   border-radius:20px;
-  padding:16px;
-  margin:12px 0;
-  box-shadow:0 0 20px #35005a;
+  padding:22px;
+  margin-bottom:16px;
 }
-
-.avatar{
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(135deg,#ff00cc,#5b36ff);
-  font-size:25px;
-  font-weight:bold;
-}
-
-button{
-  border:0;
-  border-radius:14px;
-  padding:11px 15px;
-  cursor:pointer;
-  background:#00dca4;
-  font-weight:bold;
-}
-
-.bottom{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:70px;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  background:#090410;
-  border-top:1px solid #5b2080;
-}
-
-.bottom button{
-  background:none;
-  color:white;
-}
-
-.page{display:none}
-.page.active{display:block}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.party{
-  min-height:150px;
-  background:linear-gradient(135deg,#42106d,#12051c);
-  border:1px solid #7627a5;
-  border-radius:18px;
-  padding:12px;
-  cursor:pointer;
-}
-
-.party-image{
-  height:80px;
+input,textarea{
+  width:100%;
+  padding:14px;
+  margin:7px 0;
   border-radius:12px;
-  background:linear-gradient(135deg,#ff00d4,#315cff,#00eaff);
-}
-
-.verified{
-  color:#00d9ff;
-  font-weight:bold;
-}
-
-.chat{
-  height:400px;
-  overflow:auto;
-}
-
-.message{
-  background:#291a38;
-  padding:10px;
-  border-radius:14px;
-  margin:8px 0;
-}
-
-.input{
-  display:flex;
-  gap:8px;
-  margin-top:10px;
-}
-
-.input input{
-  flex:1;
-  padding:13px;
-  border-radius:13px;
-  border:1px solid #70309a;
-  background:#170b22;
+  border:1px solid #443050;
+  background:#0d0913;
   color:white;
 }
+textarea{min-height:100px;resize:vertical}
+button{
+  width:100%;
+  padding:14px;
+  margin-top:9px;
+  border:0;
+  border-radius:12px;
+  background:#8b4dff;
+  color:white;
+  font-weight:bold;
+}
+button:active{transform:scale(.98)}
+.hidden{display:none}
+.avatar{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #a95cff;
+}
+.center{text-align:center}
+.verified{color:#55aaff}
+.admin{color:#d18aff;margin-top:5px}
+.msg{margin-top:10px}
+.error{color:#ff6688}
+.success{color:#5cff9a}
+hr{border:0;border-top:1px solid #30203e;margin:22px 0}
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">🌌 Clover<span>Space</span></div>
-  <button onclick="alert('Pesquisa em breve')">🔎</button>
-</header>
-
 <main>
 
-<section id="meet" class="page active">
-<h1>Meet</h1>
+<!-- LOGIN -->
+<section id="loginBox" class="card">
+
+<h1>🌿 CloverSpace</h1>
+<p>Entre na sua conta.</p>
+
+<input id="loginUsername" placeholder="Usuário">
+<input id="loginPassword" type="password" placeholder="Senha">
+
+<button onclick="login()">Entrar</button>
+<button onclick="showRegister()">Criar conta</button>
+
+<div id="loginMsg" class="msg"></div>
+
+</section>
+
+
+<!-- CADASTRO -->
+<section id="registerBox" class="card hidden">
+
+<h1>🌿 Criar conta</h1>
+
+<input id="registerUsername" placeholder="Usuário">
+<input id="registerPassword" type="password" placeholder="Senha">
+
+<button onclick="register()">Criar conta</button>
+<button onclick="showLogin()">Voltar</button>
+
+<div id="registerMsg" class="msg"></div>
+
+</section>
+
+
+<!-- PERFIL -->
+<section id="profileBox" class="hidden">
+
+<div class="card center">
+
+<h1>Meu perfil</h1>
+
+<img id="avatar" class="avatar">
+
+<h2 id="profileName"></h2>
+
+<div id="verified" class="verified"></div>
+<div id="admin" class="admin"></div>
+
+</div>
+
 
 <div class="card">
-  <div class="avatar">B</div>
-  <h3>Bob ✓</h3>
-  <p>🟢 Online agora</p>
-  <p>🎮 Games · 🎨 Arte · 💬 Chat</p>
-  <button onclick="alert('Pedido de amizade enviado!')">
-    Adicionar
-  </button>
+
+<h2>✏️ Editar perfil</h2>
+
+<label>Nome de usuário</label>
+<input id="editUsername">
+
+<label>Bio</label>
+<textarea id="editBio" maxlength="300"></textarea>
+
+<button onclick="saveProfile()">Salvar perfil</button>
+
+<div id="profileMsg" class="msg"></div>
+
 </div>
+
 
 <div class="card">
-  <div class="avatar">K</div>
-  <h3>Kira ✓</h3>
-  <p>🟢 Online agora</p>
-  <p>🎵 Música · 🎌 Anime</p>
-  <button onclick="alert('Pedido de amizade enviado!')">
-    Adicionar
-  </button>
-</div>
-</section>
 
-<section id="parties" class="page">
-<h1>🎉 Parties</h1>
-
-<div class="grid">
-
-<div class="party" onclick="entrarParty('Draw & Chill')">
-<div class="party-image"></div>
-<h3>Draw & Chill</h3>
-<p>🎨 Art · 👥 4.2k</p>
-</div>
-
-<div class="party" onclick="entrarParty('Friends Games')">
-<div class="party-image"></div>
-<h3>Friends Games</h3>
-<p>🎮 Games · 👥 730</p>
-</div>
-
-<div class="party" onclick="entrarParty('Cat Roleplay')">
-<div class="party-image"></div>
-<h3>Cat Roleplay</h3>
-<p>🐱 Pets · 👥 6.2k</p>
-</div>
-
-<div class="party" onclick="entrarParty('Dorm Drama')">
-<div class="party-image"></div>
-<h3>Dorm Drama</h3>
-<p>🎭 Roleplay · 🎙️ Voz</p>
-</div>
-
-</div>
-</section>
-
-<section id="profile" class="page">
-
-<div class="card" style="text-align:center">
-
-<div class="avatar" style="margin:auto">
-L
-</div>
-
-<h1>Luam</h1>
-
-<div class="verified">
-✓ Perfil verificado
-</div>
-
-<p>🟢 Online</p>
-
-<hr>
-
-<h3>👑 Administrador do CloverSpace</h3>
-
-<p>🎮 Games · 🎨 Arte · 🎵 Música · 💬 Chat</p>
-
-<button onclick="alert('Editor de perfil')">
-Editar perfil
-</button>
-
-</div>
-
-</section>
-
-<section id="chat" class="page">
-
-<h1>💬 Chat</h1>
-
-<div id="messages" class="card chat">
-
-<div class="message">
-<b>🌌 CloverSpace</b><br>
-Bem-vindo!
-</div>
-
-</div>
-
-<div class="input">
+<h2>📷 Foto de perfil</h2>
 
 <input
-id="messageInput"
-placeholder="Digite uma mensagem..."
+  id="avatarInput"
+  type="file"
+  accept="image/jpeg,image/png,image/webp"
 >
 
-<button onclick="enviar()">
-➤
-</button>
+<button onclick="uploadAvatar()">Trocar foto</button>
 
 </div>
 
-</section>
 
-<section id="call" class="page">
+<div class="card">
 
-<h1>🎙️ Voice Party</h1>
-
-<div class="card" style="text-align:center">
-
-<div style="font-size:70px">
-🎙️
-</div>
-
-<p>Chamada de voz em grupo</p>
-<p>📹 Câmera desativada</p>
-
-<button onclick="entrarVoz()">
-Entrar na call
-</button>
+<button onclick="logout()">Sair da conta</button>
 
 </div>
 
@@ -294,83 +157,387 @@ Entrar na call
 
 </main>
 
-<div class="bottom">
-
-<button onclick="abrir('meet')">
-✨<br>Meet
-</button>
-
-<button onclick="abrir('parties')">
-🎉<br>Parties
-</button>
-
-<button onclick="abrir('chat')">
-💬<br>Chat
-</button>
-
-<button onclick="abrir('call')">
-🎙️<br>Call
-</button>
-
-<button onclick="abrir('profile')">
-👤<br>Perfil
-</button>
-
-</div>
 
 <script>
 
-const socket = io();
+let token = localStorage.getItem("clover_token");
+let currentUser = null;
 
-function abrir(id){
 
-document.querySelectorAll(".page")
-.forEach(p => p.classList.remove("active"));
+/* TELAS */
 
-document.getElementById(id)
-.classList.add("active");
+function showRegister(){
 
+  document.getElementById("loginBox").classList.add("hidden");
+
+  document.getElementById("registerBox")
+    .classList.remove("hidden");
 }
 
-function enviar(){
 
-const input =
-document.getElementById("messageInput");
+function showLogin(){
 
-const texto = input.value.trim();
+  document.getElementById("registerBox")
+    .classList.add("hidden");
 
-if(!texto) return;
-
-const msg =
-document.createElement("div");
-
-msg.className="message";
-
-msg.innerHTML =
-"<b>Luam</b><br>"+texto;
-
-document.getElementById("messages")
-.appendChild(msg);
-
-input.value="";
-
+  document.getElementById("loginBox")
+    .classList.remove("hidden");
 }
 
-function entrarParty(nome){
 
-alert("Você entrou na Party: "+nome);
+/* CADASTRO */
 
-abrir("chat");
+async function register(){
 
+  const username =
+    document.getElementById("registerUsername").value.trim();
+
+  const password =
+    document.getElementById("registerPassword").value;
+
+  const msg =
+    document.getElementById("registerMsg");
+
+  msg.textContent="";
+
+  try{
+
+    const response = await fetch("/api/register",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        username,
+        password
+      })
+
+    });
+
+    const data = await response.json();
+
+    if(!response.ok){
+
+      msg.className="msg error";
+      msg.textContent=data.error;
+      return;
+    }
+
+    msg.className="msg success";
+    msg.textContent="Conta criada com sucesso!";
+
+    document.getElementById("registerUsername").value="";
+    document.getElementById("registerPassword").value="";
+
+    setTimeout(showLogin,800);
+
+  }catch(error){
+
+    msg.className="msg error";
+    msg.textContent="Erro de conexão.";
+
+  }
 }
 
-function entrarVoz(){
 
-alert(
-"🎙️ Microfone solicitado. A chamada será somente por voz, sem câmera."
-);
+/* LOGIN */
 
+async function login(){
+
+  const username =
+    document.getElementById("loginUsername").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  const msg =
+    document.getElementById("loginMsg");
+
+  msg.textContent="";
+
+  try{
+
+    const response = await fetch("/api/login",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        username,
+        password
+      })
+
+    });
+
+    const data = await response.json();
+
+    if(!response.ok){
+
+      msg.className="msg error";
+      msg.textContent=data.error;
+      return;
+    }
+
+    token=data.token;
+
+    localStorage.setItem(
+      "clover_token",
+      token
+    );
+
+    currentUser=data.user;
+
+    showProfile();
+
+  }catch(error){
+
+    msg.className="msg error";
+    msg.textContent="Erro de conexão.";
+
+  }
 }
+
+
+/* PERFIL */
+
+function showProfile(){
+
+  document.getElementById("loginBox")
+    .classList.add("hidden");
+
+  document.getElementById("registerBox")
+    .classList.add("hidden");
+
+  document.getElementById("profileBox")
+    .classList.remove("hidden");
+
+  updateProfile();
+}
+
+
+function updateProfile(){
+
+  if(!currentUser)return;
+
+  document.getElementById("profileName")
+    .textContent=currentUser.username;
+
+  document.getElementById("editUsername")
+    .value=currentUser.username;
+
+  document.getElementById("editBio")
+    .value=currentUser.bio || "";
+
+  document.getElementById("verified")
+    .textContent=currentUser.verified
+      ?"✔ Conta verificada":"";
+
+  document.getElementById("admin")
+    .textContent=currentUser.admin
+      ?"👑 Administrador do CloverSpace":"";
+
+  const avatar =
+    document.getElementById("avatar");
+
+  if(currentUser.avatar){
+
+    avatar.src=currentUser.avatar;
+
+  }else{
+
+    avatar.src=
+      "https://ui-avatars.com/api/?name="+
+      encodeURIComponent(currentUser.username)+
+      "&background=241531&color=ffffff";
+
+  }
+}
+
+
+/* SALVAR PERFIL */
+
+async function saveProfile(){
+
+  const username =
+    document.getElementById("editUsername")
+      .value.trim();
+
+  const bio =
+    document.getElementById("editBio").value;
+
+  const msg =
+    document.getElementById("profileMsg");
+
+  try{
+
+    const response = await fetch("/api/profile",{
+
+      method:"PUT",
+
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+token
+      },
+
+      body:JSON.stringify({
+        username,
+        bio
+      })
+
+    });
+
+    const data=await response.json();
+
+    if(!response.ok){
+
+      msg.className="msg error";
+      msg.textContent=data.error;
+      return;
+    }
+
+    currentUser=data.user;
+
+    updateProfile();
+
+    msg.className="msg success";
+    msg.textContent="Perfil salvo!";
+
+  }catch(error){
+
+    msg.className="msg error";
+    msg.textContent="Erro ao salvar.";
+
+  }
+}
+
+
+/* FOTO */
+
+async function uploadAvatar(){
+
+  const input =
+    document.getElementById("avatarInput");
+
+  if(!input.files.length){
+
+    document.getElementById("profileMsg").textContent="Escolha uma foto primeiro.";
+    return;
+  }
+
+  const formData=new FormData();
+
+  formData.append(
+    "avatar",
+    input.files[0]
+  );
+
+  const response=await fetch(
+    "/api/profile/avatar",
+    {
+      method:"POST",
+
+      headers:{
+        "Authorization":"Bearer "+token
+      },
+
+      body:formData
+    }
+  );
+
+  const data=await response.json();
+
+  const msg =
+    document.getElementById("profileMsg");
+
+  if(!response.ok){
+
+    msg.className="msg error";
+    msg.textContent=data.error;
+    return;
+  }
+
+  currentUser.avatar=data.avatar;
+
+  updateProfile();
+
+  input.value="";
+
+  msg.className="msg success";
+  msg.textContent="Foto atualizada!";
+}
+
+
+/* LOGOUT */
+
+async function logout(){
+
+  try{
+
+    await fetch("/api/logout",{
+
+      method:"POST",
+
+      headers:{
+        "Authorization":"Bearer "+token
+      }
+
+    });
+
+  }catch(error){}
+
+  localStorage.removeItem("clover_token");
+
+  token=null;
+  currentUser=null;
+
+  document.getElementById("profileBox")
+    .classList.add("hidden");
+
+  showLogin();
+}
+
+
+/* RECUPERAR SESSÃO */
+
+async function loadSession(){
+
+  if(!token)return;
+
+  try{
+
+    const response=await fetch("/api/me",{
+
+      headers:{
+        "Authorization":"Bearer "+token
+      }
+
+    });
+
+    if(!response.ok){
+
+      localStorage.removeItem("clover_token");
+      token=null;
+      return;
+    }
+
+    currentUser=await response.json();
+
+    showProfile();
+
+  }catch(error){
+
+    console.log("Sessão não carregada.");
+
+  }
+}
+
+loadSession();
 
 </script>
 
