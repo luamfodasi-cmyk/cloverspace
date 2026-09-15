@@ -1,0 +1,12 @@
+.call-screen{position:fixed;inset:0;background:#080a0f;color:#fff;z-index:99999;display:none;flex-direction:column;font-family:Arial,sans-serif}
+.call-top{padding:22px 18px 10px;text-align:center}
+.call-title{font-size:21px;font-weight:700}.call-status{color:#8f98a8;font-size:14px;margin-top:5px}
+.call-grid{flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:18px;align-content:center}
+.call-user{background:#151922;border-radius:20px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.call-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;background:#303746}
+.call-name{margin-top:10px;font-weight:600}.call-speaking{box-shadow:0 0 0 3px #35d866}
+.call-controls{display:flex;justify-content:center;gap:16px;padding:25px 18px 35px}
+.call-btn{width:58px;height:58px;border:0;border-radius:50%;background:#252b36;color:#fff;font-size:22px}
+.call-btn.end{background:#e53935;width:68px;height:68px}
+.call-btn.active{background:#35d866;color:#061009}
+</style>

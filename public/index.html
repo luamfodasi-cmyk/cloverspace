@@ -803,3 +803,53 @@ async function toggleMic() {
 </script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/voice-room.js"></script>
+<link rel="stylesheet" href="/call.css">
+
+<div id="cloverCall" class="call-screen">
+  <div class="call-top">
+    <div class="call-title" id="callTitle">CloverSpace</div>
+    <div class="call-status" id="callStatus">Conectando...</div>
+  </div>
+
+  <div id="callGrid" class="call-grid"></div>
+
+  <div class="call-controls">
+    <button class="call-btn" id="callMute">🎤</button>
+    <button class="call-btn" id="callSpeaker">🔊</button>
+    <button class="call-btn end" id="callEnd">📞</button>
+  </div>
+</div>
+
+<script>
+let callStream=null;
+
+async function openCloverCall(room="Sala de voz"){
+  const screen=document.getElementById("cloverCall");
+  screen.style.display="flex";
+  document.getElementById("callTitle").textContent=room;
+  document.getElementById("callStatus").textContent="Chamada de voz";
+
+  try{
+    callStream=await navigator.mediaDevices.getUserMedia({
+      audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}
+    });
+    document.getElementById("callMute").classList.add("active");
+    document.getElementById("callStatus").textContent="Microfone ativado";
+  }catch(e){
+    document.getElementById("callStatus").textContent="Permita o microfone para continuar";
+  }
+}
+
+document.getElementById("callMute").onclick=()=>{
+  if(!callStream)return;
+  const track=callStream.getAudioTracks()[0];
+  track.enabled=!track.enabled;
+  document.getElementById("callMute").classList.toggle("active",track.enabled);
+};
+
+document.getElementById("callEnd").onclick=()=>{
+  if(callStream)callStream.getTracks().forEach(t=>t.stop());
+  callStream=null;
+  document.getElementById("cloverCall").style.display="none";
+};
+</script>
