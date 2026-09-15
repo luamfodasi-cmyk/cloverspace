@@ -1,116 +1,377 @@
+<!-- COLE ESTE CÓDIGO NO ARQUIVO: public/index.html -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CloverSpace</title>
+<script src="/socket.io/socket.io.js"></script>
+
 <style>
-body{margin:0;background:#101014;color:white;font-family:Arial}
-header{padding:20px;background:#19191f;text-align:center}
-.logo{font-size:28px;color:#70ff91;font-weight:bold}
-nav{display:flex;gap:8px;padding:12px;overflow:auto;background:#19191f}
-button{padding:12px;border:0;border-radius:10px;background:#292930;color:white}
-main{max-width:700px;margin:auto;padding:15px}
-.card{background:#19191f;padding:20px;border-radius:16px;margin-bottom:15px}
-input{width:100%;padding:13px;box-sizing:border-box;border-radius:10px;border:1px solid #333;background:#101014;color:white;margin:10px 0}
-.avatar{width:80px;height:80px;border-radius:50%;background:#70ff91;color:#101014;display:flex;align-items:center;justify-content:center;font-size:35px;font-weight:bold}
-.verificado{color:#70ff91;font-weight:bold}
-.escondido{display:none}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  color:white;
+  background:
+  radial-gradient(circle at top,#35105c,#10051c 55%,#05020a);
+}
+
+header{
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #6d2ba0;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:bold;
+  text-shadow:0 0 15px #b000ff;
+}
+
+.logo span{color:#00eaff}
+
+main{
+  max-width:600px;
+  margin:auto;
+  padding:20px 15px 100px;
+}
+
+h1{
+  text-shadow:0 0 15px #e000ff;
+}
+
+.card{
+  background:#1b0d2b;
+  border:1px solid #7130a0;
+  border-radius:20px;
+  padding:16px;
+  margin:12px 0;
+  box-shadow:0 0 20px #35005a;
+}
+
+.avatar{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#ff00cc,#5b36ff);
+  font-size:25px;
+  font-weight:bold;
+}
+
+button{
+  border:0;
+  border-radius:14px;
+  padding:11px 15px;
+  cursor:pointer;
+  background:#00dca4;
+  font-weight:bold;
+}
+
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:70px;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  background:#090410;
+  border-top:1px solid #5b2080;
+}
+
+.bottom button{
+  background:none;
+  color:white;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.party{
+  min-height:150px;
+  background:linear-gradient(135deg,#42106d,#12051c);
+  border:1px solid #7627a5;
+  border-radius:18px;
+  padding:12px;
+  cursor:pointer;
+}
+
+.party-image{
+  height:80px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#ff00d4,#315cff,#00eaff);
+}
+
+.verified{
+  color:#00d9ff;
+  font-weight:bold;
+}
+
+.chat{
+  height:400px;
+  overflow:auto;
+}
+
+.message{
+  background:#291a38;
+  padding:10px;
+  border-radius:14px;
+  margin:8px 0;
+}
+
+.input{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+.input input{
+  flex:1;
+  padding:13px;
+  border-radius:13px;
+  border:1px solid #70309a;
+  background:#170b22;
+  color:white;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="logo">🌿 CloverSpace</div>
-<p>Seu espaço para conectar pessoas</p>
+  <div class="logo">🌌 Clover<span>Space</span></div>
+  <button onclick="alert('Pesquisa em breve')">🔎</button>
 </header>
-
-<nav>
-<button onclick="abrir('inicio')">🏠 Início</button>
-<button onclick="abrir('perfil')">👤 Perfil</button>
-<button onclick="abrir('amigos')">👥 Amigos</button>
-<button onclick="abrir('grupos')">👨‍👩‍👧 Grupos</button>
-<button onclick="abrir('mensagens')">💬 Chat</button>
-<button onclick="abrir('call')">📞 Call</button>
-</nav>
 
 <main>
 
-<section id="inicio">
+<section id="meet" class="page active">
+<h1>Meet</h1>
+
 <div class="card">
-<h1>Bem-vindo ao CloverSpace 🌿</h1>
-<p>Conheça pessoas, faça amigos e participe de grupos.</p>
-<button onclick="abrir('perfil')">Ver meu perfil</button>
+  <div class="avatar">B</div>
+  <h3>Bob ✓</h3>
+  <p>🟢 Online agora</p>
+  <p>🎮 Games · 🎨 Arte · 💬 Chat</p>
+  <button onclick="alert('Pedido de amizade enviado!')">
+    Adicionar
+  </button>
+</div>
+
+<div class="card">
+  <div class="avatar">K</div>
+  <h3>Kira ✓</h3>
+  <p>🟢 Online agora</p>
+  <p>🎵 Música · 🎌 Anime</p>
+  <button onclick="alert('Pedido de amizade enviado!')">
+    Adicionar
+  </button>
 </div>
 </section>
 
-<section id="perfil" class="escondido">
-<div class="card">
-<div class="avatar">L</div>
-<h2>Luam</h2>
-<p class="verificado">✓ Perfil verificado</p>
+<section id="parties" class="page">
+<h1>🎉 Parties</h1>
+
+<div class="grid">
+
+<div class="party" onclick="entrarParty('Draw & Chill')">
+<div class="party-image"></div>
+<h3>Draw & Chill</h3>
+<p>🎨 Art · 👥 4.2k</p>
+</div>
+
+<div class="party" onclick="entrarParty('Friends Games')">
+<div class="party-image"></div>
+<h3>Friends Games</h3>
+<p>🎮 Games · 👥 730</p>
+</div>
+
+<div class="party" onclick="entrarParty('Cat Roleplay')">
+<div class="party-image"></div>
+<h3>Cat Roleplay</h3>
+<p>🐱 Pets · 👥 6.2k</p>
+</div>
+
+<div class="party" onclick="entrarParty('Dorm Drama')">
+<div class="party-image"></div>
+<h3>Dorm Drama</h3>
+<p>🎭 Roleplay · 🎙️ Voz</p>
+</div>
+
+</div>
+</section>
+
+<section id="profile" class="page">
+
+<div class="card" style="text-align:center">
+
+<div class="avatar" style="margin:auto">
+L
+</div>
+
+<h1>Luam</h1>
+
+<div class="verified">
+✓ Perfil verificado
+</div>
+
 <p>🟢 Online</p>
-<button onclick="alert('Editar perfil')">✏️ Editar</button>
-<button onclick="alert('Perfil compartilhado!')">🔗 Compartilhar</button>
+
+<hr>
+
+<h3>👑 Administrador do CloverSpace</h3>
+
+<p>🎮 Games · 🎨 Arte · 🎵 Música · 💬 Chat</p>
+
+<button onclick="alert('Editor de perfil')">
+Editar perfil
+</button>
+
 </div>
+
 </section>
 
-<section id="amigos" class="escondido">
-<div class="card">
-<h2>👥 Amigos</h2>
-<p>Você ainda não possui amigos.</p>
-<button onclick="alert('Procurando pessoas...')">➕ Adicionar amigo</button>
+<section id="chat" class="page">
+
+<h1>💬 Chat</h1>
+
+<div id="messages" class="card chat">
+
+<div class="message">
+<b>🌌 CloverSpace</b><br>
+Bem-vindo!
 </div>
+
+</div>
+
+<div class="input">
+
+<input
+id="messageInput"
+placeholder="Digite uma mensagem..."
+>
+
+<button onclick="enviar()">
+➤
+</button>
+
+</div>
+
 </section>
 
-<section id="grupos" class="escondido">
-<div class="card">
-<h2>👨‍👩‍👧 Grupos</h2>
-<p>Crie ou encontre grupos.</p>
-<button onclick="alert('Criar grupo')">➕ Criar grupo</button>
-<button onclick="alert('Procurando grupos...')">🔎 Procurar</button>
-</div>
-</section>
+<section id="call" class="page">
 
-<section id="mensagens" class="escondido">
-<div class="card">
-<h2>💬 Chat</h2>
-<input id="texto" placeholder="Digite uma mensagem">
-<button onclick="enviar()">Enviar</button>
-<div id="chat"></div>
-</div>
-</section>
+<h1>🎙️ Voice Party</h1>
 
-<section id="call" class="escondido">
-<div class="card">
-<h2>📞 Call em grupo</h2>
-<p>Entre em uma sala de chamada.</p>
-<button onclick="alert('Sala de chamada criada!')">📞 Entrar na call</button>
-<button onclick="alert('Convite copiado!')">🔗 Convidar</button>
+<div class="card" style="text-align:center">
+
+<div style="font-size:70px">
+🎙️
 </div>
+
+<p>Chamada de voz em grupo</p>
+<p>📹 Câmera desativada</p>
+
+<button onclick="entrarVoz()">
+Entrar na call
+</button>
+
+</div>
+
 </section>
 
 </main>
 
+<div class="bottom">
+
+<button onclick="abrir('meet')">
+✨<br>Meet
+</button>
+
+<button onclick="abrir('parties')">
+🎉<br>Parties
+</button>
+
+<button onclick="abrir('chat')">
+💬<br>Chat
+</button>
+
+<button onclick="abrir('call')">
+🎙️<br>Call
+</button>
+
+<button onclick="abrir('profile')">
+👤<br>Perfil
+</button>
+
+</div>
+
 <script>
+
+const socket = io();
+
 function abrir(id){
-document.querySelectorAll("main section").forEach(x=>x.classList.add("escondido"));
-document.getElementById(id).classList.remove("escondido");
+
+document.querySelectorAll(".page")
+.forEach(p => p.classList.remove("active"));
+
+document.getElementById(id)
+.classList.add("active");
+
 }
 
 function enviar(){
-let campo=document.getElementById("texto");
-let texto=campo.value.trim();
 
-if(texto=="")return;
+const input =
+document.getElementById("messageInput");
 
-let mensagem=document.createElement("p");
-mensagem.textContent="💬 Você: "+texto;
+const texto = input.value.trim();
 
-document.getElementById("chat").appendChild(mensagem);
-campo.value="";
+if(!texto) return;
+
+const msg =
+document.createElement("div");
+
+msg.className="message";
+
+msg.innerHTML =
+"<b>Luam</b><br>"+texto;
+
+document.getElementById("messages")
+.appendChild(msg);
+
+input.value="";
+
 }
+
+function entrarParty(nome){
+
+alert("Você entrou na Party: "+nome);
+
+abrir("chat");
+
+}
+
+function entrarVoz(){
+
+alert(
+"🎙️ Microfone solicitado. A chamada será somente por voz, sem câmera."
+);
+
+}
+
 </script>
 
 </body>
