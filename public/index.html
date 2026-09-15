@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloverSpace</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #071a12, #0d3020, #071a12);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 70px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .green {
+      color: #43e879;
+    }
+
+    p {
+      color: #b8c9c0;
+      font-size: 17px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #43e879;
+      color: #06200f;
+    }
+
+    .secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .features {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .feature {
+      padding: 18px 10px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 16px;
+      color: #d8e5de;
+    }
+
+    .feature strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="logo">🌿</div>
+
+    <h1>Clover<span class="green">Space</span></h1>
+
+    <p>
+      Um novo espaço para fazer amigos,
+      conversar, criar grupos e se conectar.
+    </p>
+
+    <div class="card">
+
+      <h2>Bem-vindo ao CloverSpace</h2>
+
+      <button class="primary">
+        🚀 Criar minha conta
+      </button>
+
+      <button class="secondary">
+        🔐 Entrar
+      </button>
+
+      <div class="features">
+
+        <div class="feature">
+          <strong>👥</strong>
+          Amigos
+        </div>
+
+        <div class="feature">
+          <strong>💬</strong>
+          Conversas
+        </div>
+
+        <div class="feature">
+          <strong>🎙️</strong>
+          Chamadas
+        </div>
+
+        <div class="feature">
+          <strong>🌎</strong>
+          Comunidades
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
