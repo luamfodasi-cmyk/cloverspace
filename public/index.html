@@ -249,6 +249,109 @@ button {
   white-space: nowrap;
 }
 </style>
+
+<style id="clover-modern-rooms">
+/* ===== CLOVERSPACE — SALAS NOVO VISUAL ===== */
+body{
+  background:#090b10 !important;
+  color:#f5f7fa !important;
+}
+
+header,.topbar,.navbar{
+  background:linear-gradient(180deg,#151923,#10131b) !important;
+  border-bottom:1px solid #252b38 !important;
+}
+
+.room-card,.room,.salas-card{
+  background:linear-gradient(145deg,#181d27,#11151d) !important;
+  border:1px solid #292f3c !important;
+  border-radius:22px !important;
+  box-shadow:0 10px 30px rgba(0,0,0,.28) !important;
+  padding:22px !important;
+  margin:16px 0 !important;
+  transition:.2s ease !important;
+}
+
+.room-card:hover,.room:hover,.salas-card:hover{
+  transform:translateY(-2px);
+  border-color:#3c4658 !important;
+}
+
+.room-card h3,.room h3,.salas-card h3{
+  font-size:21px !important;
+  font-weight:750 !important;
+  color:#fff !important;
+}
+
+.room-card p,.room p,.salas-card p{
+  color:#9da6b5 !important;
+}
+
+.room-card button,.room button,.salas-card button{
+  width:100% !important;
+  min-height:50px !important;
+  border:0 !important;
+  border-radius:15px !important;
+  background:linear-gradient(135deg,#35d866,#20b957) !important;
+  color:#061009 !important;
+  font-size:16px !important;
+  font-weight:750 !important;
+  box-shadow:0 6px 18px rgba(45,211,91,.18) !important;
+}
+
+.room-card button:hover,.room button:hover,.salas-card button:hover{
+  filter:brightness(1.08);
+}
+
+.live,.online,.ao-vivo{
+  color:#52e879 !important;
+  font-weight:650 !important;
+}
+
+.live::before,.online::before,.ao-vivo::before{
+  color:#52e879 !important;
+}
+
+nav,.bottom-nav,.navbar-bottom{
+  background:#11151d !important;
+  border-top:1px solid #292f3c !important;
+  box-shadow:0 -8px 25px rgba(0,0,0,.25) !important;
+}
+
+nav a,.bottom-nav a,.navbar-bottom a{
+  color:#8d96a6 !important;
+}
+
+nav a.active,.bottom-nav a.active,.navbar-bottom a.active{
+  color:#4ee875 !important;
+}
+
+h1,h2{
+  letter-spacing:-.5px !important;
+}
+
+.page-title,.section-title{
+  font-size:30px !important;
+  font-weight:800 !important;
+}
+
+.subtitle{
+  color:#8d96a6 !important;
+}
+
+/* esconder excesso de espaço e deixar conteúdo mais compacto */
+main,.content,.container{
+  max-width:900px !important;
+}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{
+  background:#303746;
+  border-radius:20px;
+}
+</style>
+
 </head>
 
 <body>
