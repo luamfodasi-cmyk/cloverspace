@@ -1,159 +1,254 @@
-<!DOCTYPE html>
+k<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CloverSpace</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloverSpace</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #071a12, #0d3020, #071a12);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#06140d,#0b3520,#06140d);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
 
-    .container {
-      width: 100%;
-      max-width: 500px;
-      text-align: center;
-    }
+.container{width:100%;max-width:430px;text-align:center}
 
-    .logo {
-      font-size: 70px;
-      margin-bottom: 10px;
-    }
+.logo{font-size:65px}
 
-    h1 {
-      font-size: 42px;
-      margin-bottom: 12px;
-    }
+h1{font-size:40px;margin:8px 0}
+.green{color:#43e879}
 
-    .green {
-      color: #43e879;
-    }
+.subtitle{color:#b8c9c0;margin-bottom:25px}
 
-    p {
-      color: #b8c9c0;
-      font-size: 17px;
-      line-height: 1.5;
-      margin-bottom: 30px;
-    }
+.card{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  padding:28px;
+  backdrop-filter:blur(12px);
+}
 
-    .card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 24px;
-      padding: 30px;
-      backdrop-filter: blur(10px);
-    }
+input{
+  width:100%;
+  padding:15px;
+  margin:7px 0;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:12px;
+  background:rgba(0,0,0,.25);
+  color:white;
+  outline:none;
+}
 
-    button {
-      width: 100%;
-      padding: 16px;
-      margin-top: 12px;
-      border: none;
-      border-radius: 14px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button{
+  width:100%;
+  padding:15px;
+  margin-top:10px;
+  border:0;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    .primary {
-      background: #43e879;
-      color: #06200f;
-    }
+.primary{background:#43e879;color:#06200f}
+.secondary{background:rgba(255,255,255,.1);color:white}
 
-    .secondary {
-      background: rgba(255,255,255,0.1);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
+.hidden{display:none}
 
-    .features {
-      margin-top: 25px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .feature {
-      padding: 18px 10px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 16px;
-      color: #d8e5de;
-    }
-
-    .feature strong {
-      display: block;
-      font-size: 24px;
-      margin-bottom: 5px;
-    }
-  </style>
+.msg{
+  margin-top:15px;
+  color:#43e879;
+  font-size:14px;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="logo">🌿</div>
+<div class="logo">🌿</div>
+<h1>Clover<span class="green">Space</span></h1>
+<p class="subtitle">Conecte-se. Converse. Faça amigos.</p>
 
-    <h1>Clover<span class="green">Space</span></h1>
+<!-- INÍCIO -->
+<div class="card" id="inicio">
 
-    <p>
-      Um novo espaço para fazer amigos,
-      conversar, criar grupos e se conectar.
-    </p>
+<h2>Bem-vindo 👋</h2>
+<p style="margin:15px 0;color:#bbb">
+Entre ou crie sua conta para começar.
+</p>
 
-    <div class="card">
+<button class="primary" onclick="mostrar('cadastro')">
+🚀 Criar minha conta
+</button>
 
-      <h2>Bem-vindo ao CloverSpace</h2>
+<button class="secondary" onclick="mostrar('login')">
+🔐 Entrar
+</button>
 
-      <button class="primary">
-        🚀 Criar minha conta
-      </button>
+</div>
 
-      <button class="secondary">
-        🔐 Entrar
-      </button>
+<!-- CADASTRO -->
+<div class="card hidden" id="cadastro">
 
-      <div class="features">
+<h2>Criar conta 🌿</h2>
 
-        <div class="feature">
-          <strong>👥</strong>
-          Amigos
-        </div>
+<input id="nome" placeholder="Seu nome">
 
-        <div class="feature">
-          <strong>💬</strong>
-          Conversas
-        </div>
+<input id="email" type="email" placeholder="Seu e-mail">
 
-        <div class="feature">
-          <strong>🎙️</strong>
-          Chamadas
-        </div>
+<input id="senha" type="password" placeholder="Sua senha">
 
-        <div class="feature">
-          <strong>🌎</strong>
-          Comunidades
-        </div>
+<button class="primary" onclick="cadastrar()">
+Criar conta
+</button>
 
-      </div>
+<button class="secondary" onclick="mostrar('inicio')">
+Voltar
+</button>
 
-    </div>
+<div class="msg" id="msgCadastro"></div>
 
-  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="card hidden" id="login">
+
+<h2>Entrar 🔐</h2>
+
+<input id="emailLogin" type="email" placeholder="Seu e-mail">
+
+<input id="senhaLogin" type="password" placeholder="Sua senha">
+
+<button class="primary" onclick="entrar()">
+Entrar
+</button>
+
+<button class="secondary" onclick="mostrar('inicio')">
+Voltar
+</button>
+
+<div class="msg" id="msgLogin"></div>
+
+</div>
+
+<!-- PERFIL -->
+<div class="card hidden" id="perfil">
+
+<h2>🌿 Bem-vindo!</h2>
+
+<p id="usuarioLogado" style="margin:20px 0;color:#ccc"></p>
+
+<button class="primary" onclick="alert('Área de amigos em construção 👥')">
+👥 Amigos
+</button>
+
+<button class="primary" onclick="alert('Chat em construção 💬')">
+💬 Conversas
+</button>
+
+<button class="primary" onclick="alert('Chamadas em construção 🎙️')">
+🎙️ Chamadas
+</button>
+
+<button class="primary" onclick="alert('Comunidades em construção 🌎')">
+🌎 Comunidades
+</button>
+
+<button class="secondary" onclick="sair()">
+Sair
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function mostrar(tela){
+
+document.querySelectorAll('.card')
+.forEach(x=>x.classList.add('hidden'));
+
+document.getElementById(tela)
+.classList.remove('hidden');
+
+}
+
+function cadastrar(){
+
+let nome=document.getElementById('nome').value;
+let email=document.getElementById('email').value;
+let senha=document.getElementById('senha').value;
+
+if(!nome || !email || !senha){
+
+document.getElementById('msgCadastro').textContent=
+'Preencha todos os campos.';
+
+return;
+
+}
+
+localStorage.setItem('cloverUser',
+JSON.stringify({nome,email,senha}));
+
+document.getElementById('msgCadastro').textContent=
+'Conta criada! Agora você pode entrar.';
+
+setTimeout(()=>mostrar('login'),1000);
+
+}
+
+function entrar(){
+
+let email=document.getElementById('emailLogin').value;
+let senha=document.getElementById('senhaLogin').value;
+
+let usuario=JSON.parse(
+localStorage.getItem('cloverUser')
+);
+
+if(!usuario){
+
+document.getElementById('msgLogin').textContent=
+'Nenhuma conta encontrada.';
+
+return;
+
+}
+
+if(email===usuario.email && senha===usuario.senha){
+
+document.getElementById('usuarioLogado').textContent=
+'Olá, '+usuario.nome+'! 🌿';
+
+mostrar('perfil');
+
+}else{
+
+document.getElementById('msgLogin').textContent=
+'E-mail ou senha incorretos.';
+
+}
+
+}
+
+function sair(){
+
+mostrar('inicio');
+
+}
+
+</script>
 
 </body>
 </html>
