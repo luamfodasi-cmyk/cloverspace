@@ -1,4 +1,4 @@
-k<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -13,46 +13,41 @@ body{
   background:linear-gradient(135deg,#06140d,#0b3520,#06140d);
   color:white;
   display:flex;
-  align-items:center;
   justify-content:center;
-  padding:20px;
+  padding:25px;
 }
 
-.container{width:100%;max-width:430px;text-align:center}
+.container{width:100%;max-width:500px}
 
-.logo{font-size:65px}
+.logo{text-align:center;font-size:60px}
 
-h1{font-size:40px;margin:8px 0}
+h1{text-align:center;font-size:38px;margin:5px 0 25px}
 .green{color:#43e879}
-
-.subtitle{color:#b8c9c0;margin-bottom:25px}
 
 .card{
   background:rgba(255,255,255,.08);
   border:1px solid rgba(255,255,255,.12);
-  border-radius:24px;
-  padding:28px;
-  backdrop-filter:blur(12px);
+  border-radius:22px;
+  padding:25px;
+  margin-bottom:15px;
 }
 
 input{
   width:100%;
-  padding:15px;
-  margin:7px 0;
-  border:1px solid rgba(255,255,255,.15);
+  padding:14px;
+  margin:6px 0;
+  border:0;
   border-radius:12px;
-  background:rgba(0,0,0,.25);
+  background:rgba(0,0,0,.3);
   color:white;
-  outline:none;
 }
 
 button{
   width:100%;
-  padding:15px;
+  padding:14px;
   margin-top:10px;
   border:0;
   border-radius:12px;
-  font-size:16px;
   font-weight:bold;
   cursor:pointer;
 }
@@ -62,10 +57,43 @@ button{
 
 .hidden{display:none}
 
-.msg{
-  margin-top:15px;
+.profile{
+  text-align:center;
+}
+
+.avatar{
+  width:90px;
+  height:90px;
+  margin:auto;
+  border-radius:50%;
+  background:#43e879;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  color:#06200f;
+}
+
+.name{
+  font-size:25px;
+  font-weight:bold;
+  margin-top:12px;
+}
+
+.verified{
   color:#43e879;
-  font-size:14px;
+  font-size:20px;
+  margin-left:5px;
+}
+
+.badge{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 12px;
+  border-radius:20px;
+  background:rgba(67,232,121,.15);
+  color:#43e879;
+  font-size:13px;
 }
 </style>
 </head>
@@ -76,15 +104,10 @@ button{
 
 <div class="logo">🌿</div>
 <h1>Clover<span class="green">Space</span></h1>
-<p class="subtitle">Conecte-se. Converse. Faça amigos.</p>
 
-<!-- INÍCIO -->
-<div class="card" id="inicio">
+<div id="inicio" class="card">
 
 <h2>Bem-vindo 👋</h2>
-<p style="margin:15px 0;color:#bbb">
-Entre ou crie sua conta para começar.
-</p>
 
 <button class="primary" onclick="mostrar('cadastro')">
 🚀 Criar minha conta
@@ -96,15 +119,12 @@ Entre ou crie sua conta para começar.
 
 </div>
 
-<!-- CADASTRO -->
-<div class="card hidden" id="cadastro">
+<div id="cadastro" class="card hidden">
 
-<h2>Criar conta 🌿</h2>
+<h2>Criar conta</h2>
 
 <input id="nome" placeholder="Seu nome">
-
-<input id="email" type="email" placeholder="Seu e-mail">
-
+<input id="email" placeholder="Seu e-mail">
 <input id="senha" type="password" placeholder="Sua senha">
 
 <button class="primary" onclick="cadastrar()">
@@ -115,17 +135,15 @@ Criar conta
 Voltar
 </button>
 
-<div class="msg" id="msgCadastro"></div>
+<p id="msgCadastro"></p>
 
 </div>
 
-<!-- LOGIN -->
-<div class="card hidden" id="login">
+<div id="login" class="card hidden">
 
-<h2>Entrar 🔐</h2>
+<h2>Entrar</h2>
 
-<input id="emailLogin" type="email" placeholder="Seu e-mail">
-
+<input id="emailLogin" placeholder="Seu e-mail">
 <input id="senhaLogin" type="password" placeholder="Sua senha">
 
 <button class="primary" onclick="entrar()">
@@ -136,30 +154,40 @@ Entrar
 Voltar
 </button>
 
-<div class="msg" id="msgLogin"></div>
+<p id="msgLogin"></p>
 
 </div>
 
-<!-- PERFIL -->
-<div class="card hidden" id="perfil">
+<div id="perfil" class="card hidden profile">
 
-<h2>🌿 Bem-vindo!</h2>
+<div class="avatar">👤</div>
 
-<p id="usuarioLogado" style="margin:20px 0;color:#ccc"></p>
+<div class="name">
+<span id="nomePerfil"></span>
+<span class="verified">✓</span>
+</div>
 
-<button class="primary" onclick="alert('Área de amigos em construção 👥')">
+<div class="badge">
+✓ Verificado
+</div>
+
+<p style="margin-top:10px;color:#aaa">
+👑 Administrador do CloverSpace
+</p>
+
+<button class="primary">
 👥 Amigos
 </button>
 
-<button class="primary" onclick="alert('Chat em construção 💬')">
+<button class="primary">
 💬 Conversas
 </button>
 
-<button class="primary" onclick="alert('Chamadas em construção 🎙️')">
-🎙️ Chamadas
+<button class="primary">
+🎙️ Salas de voz
 </button>
 
-<button class="primary" onclick="alert('Comunidades em construção 🌎')">
+<button class="primary">
 🌎 Comunidades
 </button>
 
@@ -173,79 +201,72 @@ Sair
 
 <script>
 
-function mostrar(tela){
+function mostrar(id){
+  document.querySelectorAll(".card")
+    .forEach(x=>x.classList.add("hidden"));
 
-document.querySelectorAll('.card')
-.forEach(x=>x.classList.add('hidden'));
-
-document.getElementById(tela)
-.classList.remove('hidden');
-
+  document.getElementById(id)
+    .classList.remove("hidden");
 }
 
-function cadastrar(){
+async function cadastrar(){
 
-let nome=document.getElementById('nome').value;
-let email=document.getElementById('email').value;
-let senha=document.getElementById('senha').value;
+  const nome=document.getElementById("nome").value;
+  const email=document.getElementById("email").value;
+  const senha=document.getElementById("senha").value;
 
-if(!nome || !email || !senha){
+  const resposta=await fetch("/api/register",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      username:email,
+      password:senha
+    })
+  });
 
-document.getElementById('msgCadastro').textContent=
-'Preencha todos os campos.';
+  const dados=await resposta.json();
 
-return;
+  if(!resposta.ok){
+    document.getElementById("msgCadastro").textContent=dados.error;
+    return;
+  }
 
+  localStorage.setItem("cloverNome",nome);
+
+  alert("Conta criada com sucesso!");
+  mostrar("login");
 }
 
-localStorage.setItem('cloverUser',
-JSON.stringify({nome,email,senha}));
+async function entrar(){
 
-document.getElementById('msgCadastro').textContent=
-'Conta criada! Agora você pode entrar.';
+  const email=document.getElementById("emailLogin").value;
+  const senha=document.getElementById("senhaLogin").value;
 
-setTimeout(()=>mostrar('login'),1000);
+  const resposta=await fetch("/api/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      username:email,
+      password:senha
+    })
+  });
 
-}
+  const dados=await resposta.json();
 
-function entrar(){
+  if(!resposta.ok){
+    document.getElementById("msgLogin").textContent=dados.error;
+    return;
+  }
 
-let email=document.getElementById('emailLogin').value;
-let senha=document.getElementById('senhaLogin').value;
+  const nome=localStorage.getItem("cloverNome") || dados.user.username;
 
-let usuario=JSON.parse(
-localStorage.getItem('cloverUser')
-);
+  document.getElementById("nomePerfil").textContent=nome;
 
-if(!usuario){
-
-document.getElementById('msgLogin').textContent=
-'Nenhuma conta encontrada.';
-
-return;
-
-}
-
-if(email===usuario.email && senha===usuario.senha){
-
-document.getElementById('usuarioLogado').textContent=
-'Olá, '+usuario.nome+'! 🌿';
-
-mostrar('perfil');
-
-}else{
-
-document.getElementById('msgLogin').textContent=
-'E-mail ou senha incorretos.';
-
-}
-
+  mostrar("perfil");
 }
 
 function sair(){
-
-mostrar('inicio');
-
+  mostrar("inicio");
 }
 
 </script>
