@@ -3,16 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Perfil</title>
-    <style>*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}body{background:linear-gradient(135deg,#120720,#2d1b47,#1a0a2e);min-height:100vh;color:white;padding:20px}.back{padding:12px 20px;background:rgba(167,139,250,.2);border-radius:10px;cursor:pointer;display:inline-block;margin-bottom:30px}.card{background:rgba(45,27,71,.6);border-radius:20px;padding:30px;max-width:400px;margin:0 auto;text-align:center}.avatar{width:100px;height:100px;border-radius:50%;background:#3a2454;display:flex;align-items:center;justify-content:center;font-size:48px;margin:0 auto 20px;border:3px solid #a78bfa}.name{font-size:24px;font-weight:bold;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:5px}.zid{color:#a78bfa;margin-bottom:20px}.verified{width:20px;height:20px;background:#10b981;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:900}.verified::after{content:"✓"}.btn{margin-top:20px;padding:12px 30px;background:linear-gradient(90deg,#7c3aed,#a855f7);border:none;border-radius:10px;color:white;font-size:16px;cursor:pointer}</style>
+    <title>Meu Perfil — CloverSpace</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body {
+            background: linear-gradient(135deg, #120720, #2d1b47, #1a0a2e);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        .back {
+            padding: 12px 20px;
+            background: rgba(167, 139, 250, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        .profile-card {
+            background: rgba(45, 27, 71, 0.6);
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 420px;
+            margin: 0 auto;
+            text-align: center;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            cursor: pointer;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #3a2454;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            border: 3px solid #a78bfa;
+            overflow: hidden;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        .avatar-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.6);
+            padding: 6px;
+            font-size: 12px;
+            border-radius: 0 0 50% 50%;
+        }
+        .name-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .name { font-size: 26px; font-weight: bold; }
+        .verified {
+            width: 22px;
+            height: 22px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: white;
+        }
+        .verified::after { content: "✓"; }
+        .zid { color: #a78bfa; margin-bottom: 15px; font-size: 15px; }
+        .bio {
+            color: #d1d5db;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            padding: 0 10px;
+        }
+        .edit-btn {
+            padding: 13px 35px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        input[type="file"] { display: none; }
+
+        /* MODAL DE EDIÇÃO */
+        .modal-fundo {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-conteudo {
+            background: linear-gradient(135deg, #2d1b47, #1a0a2e);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(167,139,250,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-titulo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .campo { margin-bottom: 15px; }
+        .campo-label {
+            font-size: 14px;
+            color: #a78bfa;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .campo-input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(167,139,250,0.3);
+            background: rgba(18,7,32,0.6);
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+        .campo-input:focus { border-color: #a78bfa; }
+        .botoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-cancelar {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(167,139,250,0.3);
+            background: transparent;
+            color: #c4b5fd;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        .btn-salvar {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="back" onclick="window.location.href='index.html'">← Voltar</div>
-    <div class="card">
-        <div class="avatar">👤</div>
-        <div class="name">Naoki <span class="verified">✓</span></div>
-        <div class="zid">Z-ID: #000001</div>
-        <button class="btn">✏️ Editar Perfil</button>
+    
+    <div class="profile-card">
+        <!-- 📷 FOTO DE PERFIL CLICÁVEL -->
+        <div class="avatar-container" onclick="document.getElementById('fotoInput').click()">
+            <div class="avatar" id="avatarDisplay">
+                <span id="avatarPlaceholder">👤</span>
+                <img id="avatarImg" src="" alt="Foto de perfil">
+            </div>
+            <div class="avatar-overlay">📷 Trocar foto</div>
+        </div>
+        <input type="file" id="fotoInput" accept="image/*" onchange="trocarFoto(event)">
+        
+        <div class="name-row">
+            <span class="name" id="nomeExibicao">Naoki</span>
+            <span class="verified">✓</span>
+        </div>
+        <div class="zid" id="zidExibicao">Z-ID: #000001</div>
+        <p class="bio" id="bioExibicao">Olá! Sou o Naoki, criador do CloverSpace. 🎉 Vamos construir juntos! ✨</p>
+        
+        <button class="edit-btn" onclick="abrirEditar()">✏️ Editar Perfil</button>
     </div>
+
+    <!-- ✏️ MODAL — EDITAR PERFIL -->
+    <div class="modal-fundo" id="modalEditar" onclick="fecharFora(event)">
+        <div class="modal-conteudo" onclick="event.stopPropagation()">
+            <h2 class="modal-titulo">✏️ Editar Perfil</h2>
+
+            <div class="campo">
+                <label class="campo-label">📷 Nova Foto</label>
+                <input type="file" class="campo-input" id="inputFoto" accept="image/*">
+            </div>
+
+            <div class="campo">
+                <label class="campo-label">Nome</label>
+                <input type="text" class="campo-input" id="inputNome" placeholder="Seu nome">
+            </div>
+
+            <div class="campo">
+                <label class="campo-label">Z-ID</label>
+                <input type="text" class="campo-input" id="inputZid" placeholder="#000001">
+            </div>
+
+            <div class="campo">
+                <label class="campo-label">Biografia</label>
+                <textarea class="campo-input" id="inputBio" rows="4" placeholder="Escreva sobre você..."></textarea>
+            </div>
+
+            <div class="botoes">
+                <button class="btn-cancelar" onclick="fecharEditar()">Cancelar</button>
+                <button class="btn-salvar" onclick="salvarPerfil()">Salvar ✅</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DADOS DO PERFIL
+        let perfil = {
+            nome: "Naoki",
+            zid: "#000001",
+            bio: "Olá! Sou o Naoki, criador do CloverSpace. 🎉 Vamos construir juntos! ✨",
+            foto: null
+        };
+
+        // 📷 TROCAR FOTO
+        function trocarFoto(event) {
+            const arquivo = event.target.files[0];
+            if (arquivo) {
+                const leitor = new FileReader();
+                leitor.onload = function(e) {
+                    document.getElementById('avatarImg').src = e.target.result;
+                    document.getElementById('avatarImg').style.display = 'block';
+                    document.getElementById('avatarPlaceholder').style.display = 'none';
+                    perfil.foto = e.target.result;
+                };
+                leitor.readAsDataURL(arquivo);
+            }
+        }
+
+        // ✏️ ABRIR MODAL
+        function abrirEditar() {
+            document.getElementById('inputNome').value = perfil.nome;
+            document.getElementById('inputZid').value = perfil.zid;
+            document.getElementById('inputBio').value = perfil.bio;
+            document.getElementById('modalEditar').style.display = 'flex';
+        }
+
+        // ❌ FECHAR MODAL
+        function fecharEditar() {
+            document.getElementById('modalEditar').style.display = 'none';
+        }
+
+        // 🔒 FECHAR AO CLICAR FORA
+        function fecharFora(event) {
+            if (event.target.id === 'modalEditar') {
+                fecharEditar();
+            }
+        }
+
+        // ✅ SALVAR ALTERAÇÕES
+        function salvarPerfil() {
+            const novoNome = document.getElementById('inputNome').value.trim();
+            const novoZid = document.getElementById('inputZid').value.trim();
+            const novaBio = document.getElementById('inputBio').value.trim();
+            const novaFoto = document.getElementById('inputFoto').files[0];
+
+            if (!novoNome || !novoZid) {
+                alert('⚠️ Preencha nome e Z-ID!');
+                return;
+            }
+
+            // Atualizar foto se escolhida
+            if (novaFoto) {
+                const leitor = new FileReader();
+                leitor.onload = function(e) {
+                    document.getElementById('avatarImg').src = e.target.result;
+                    document.getElementById('avatarImg').style.display = 'block';
+                    document.getElementById('avatarPlaceholder').style.display = 'none';
+                };
+                leitor.readAsDataURL(novaFoto);
+            }
+
+            // Atualizar textos
+            perfil.nome = novoNome;
+            perfil.zid = novoZid;
+            perfil.bio = novaBio;
+
+            document.getElementById('nomeExibicao').textContent = novoNome;
+            document.getElementById('zidExibicao').textContent = 'Z-ID: ' + novoZid;
+            document.getElementById('bioExibicao').textContent = novaBio;
+
+            fecharEditar();
+            alert('✅ Perfil atualizado com sucesso!');
+        }
+    </script>
 </body>
 </html>
