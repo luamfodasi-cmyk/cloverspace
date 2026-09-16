@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1789484652104",
+    "username": "Nicolas",
+    "password": "$2b$12$JVHsuUPaaJFIcXhahZE3b.tL8/9PcSTWBnOFKBjE4nK41mMtvXppa",
+    "bio": "",
+    "avatar": "/uploads/1789484701180-klwkt9ai1nr.jpg",
+    "verified": true,
+    "admin": true,
+    "online": true,
+    "createdAt": "2026-09-15T15:04:12.776Z"
+  },
+  {
+    "id": "1789486203586",
+    "username": "Nicolasadmin",
+    "password": "$2b$12$M3A9IAlKSW39a/ZsLVctEumP4zmORM1EluFeiLabV/TWgVnD2/.tK",
+    "bio": "",
+    "avatar": "",
+    "verified": false,
+    "admin": false,
+    "online": false,
+    "createdAt": "2026-09-15T15:30:04.836Z"
+  },
+  {
+    "id": "1789486233851",
+    "username": "admin",
+    "password": "$2b$12$4n9XpvF6qqAEU4TWdvxkdeLwG9IYhLGM1.YHZjBYm6L2adXVqAkxi",
+    "bio": "novo projeto!!!!",
+    "avatar": "/uploads/1789486278583-36mkg52asoj.jpg",
+    "verified": false,
+    "admin": false,
+    "online": true,
+    "createdAt": "2026-09-15T15:30:35.007Z"
+  }
+]

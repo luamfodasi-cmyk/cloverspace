@@ -1,22 +1,25 @@
 {
   "name": "cloverspace",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "ws": "^8.21.3"
+  },
+  "description": "",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luamfodasi-cmyk/cloverspace.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "multer": "^2.4.0",
-    "socket.io": "^4.8.3",
-    "sql.js": "^1.14.2",
-    "sqlite3": "^6.0.1"
-  }
+  "bugs": {
+    "url": "https://github.com/luamfodasi-cmyk/cloverspace/issues"
+  },
+  "homepage": "https://github.com/luamfodasi-cmyk/cloverspace#readme"
 }

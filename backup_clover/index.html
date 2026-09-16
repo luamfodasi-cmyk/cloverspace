@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloverSpace</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0d0f14;
+  color: #fff;
+  min-height: 100vh;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+  color: white;
+}
+
+.app {
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* TOPO */
+.header {
+  height: 65px;
+  background: #151820;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid #252a35;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #55d66b;
+}
+
+.coins {
+  background: #222732;
+  padding: 9px 13px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+/* PÁGINAS */
+.page {
+  display: none;
+  padding: 20px;
+}
+
+.page.active {
+  display: block;
+}
+
+.title {
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #8f96a5;
+  margin-bottom: 20px;
+}
+
+/* HOME */
+.banner {
+  background: linear-gradient(135deg,#193522,#101d17);
+  border: 1px solid #285a38;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 22px;
+}
+
+.banner h2 {
+  margin-bottom: 8px;
+}
+
+.banner p {
+  color: #aeb6b0;
+}
+
+/* SALAS */
+.room {
+  background: #171b24;
+  border: 1px solid #272d39;
+  border-radius: 16px;
+  padding: 17px;
+  margin-bottom: 13px;
+}
+
+.room-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.online {
+  color: #55d66b;
+  font-size: 13px;
+}
+
+.room-info {
+  color: #8f96a5;
+  margin: 10px 0 15px;
+}
+
+.enter {
+  width: 100%;
+  padding: 12px;
+  background: #55d66b;
+  color: #071009;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+/* SALA ABERTA */
+.room-screen {
+  background: #10131a;
+  min-height: calc(100vh - 145px);
+}
+
+.room-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.back {
+  background: #242a35;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.members {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.member {
+  background: #191e28;
+  border-radius: 15px;
+  padding: 18px;
+  text-align: center;
+}
+
+.avatar {
+  width: 55px;
+  height: 55px;
+  margin: auto;
+  border-radius: 50%;
+  background: #55d66b;
+  color: #071009;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+/* BOTÕES */
+.primary {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  background: #55d66b;
+  color: #071009;
+  font-weight: bold;
+}
+
+.card {
+  background: #171b24;
+  border: 1px solid #272d39;
+  padding: 18px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+/* MENU */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: #151820;
+  border-top: 1px solid #292e39;
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  z-index: 20;
+}
+
+.nav-btn {
+  background: transparent;
+  color: #7f8795;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.nav-btn .icon {
+  font-size: 21px;
+}
+
+.nav-btn.active {
+  color: #55d66b;
+}
+
+/* AVISO */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 90px;
+  transform: translateX(-50%);
+  background: #252b36;
+  padding: 12px 18px;
+  border-radius: 12px;
+  display: none;
+  z-index: 50;
+  white-space: nowrap;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- TOPO -->
+  <header class="header">
+    <div class="logo">🍀 Clover<span>Space</span></div>
+    <div class="coins">🪙 <span id="coinValue">1.000</span></div>
+  </header>
+
+
+  <!-- INÍCIO -->
+  <section id="home" class="page active">
+
+    <h1 class="title">Início</h1>
+    <p class="subtitle">Bem-vindo ao CloverSpace</p>
+
+    <div class="banner">
+      <h2>🍀 Encontre sua comunidade</h2>
+      <p>Entre em salas, converse e conheça novas pessoas.</p>
+    </div>
+
+    <div class="card">
+      <h3>🎙️ Salas de voz</h3>
+      <p style="color:#8f96a5;margin:8px 0 15px;">
+        Existem salas esperando por você.
+      </p>
+
+      <button class="primary" onclick="openPage('rooms')">
+        Ver salas
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- PRIVADO -->
+  <section id="private" class="page">
+
+    <h1 class="title">Privado</h1>
+    <p class="subtitle">Suas conversas</p>
+
+    <div class="card">
+      💬 Nenhuma conversa ainda.
+    </div>
+
+  </section>
+
+
+  <!-- GRUPOS -->
+  <section id="groups" class="page">
+
+    <h1 class="title">Grupos</h1>
+    <p class="subtitle">Comunidades</p>
+
+    <div class="card">
+      👥 Nenhum grupo encontrado.
+    </div>
+
+  </section>
+
+
+  <!-- SALAS -->
+  <section id="rooms" class="page">
+
+    <h1 class="title">Salas</h1>
+    <p class="subtitle">Entre em uma sala de voz</p>
+
+    <div id="roomList">
+
+      <div class="room">
+
+        <div class="room-top">
+          <div class="room-name">🎵 Música &amp; Resenha</div>
+          <div class="online">● AO VIVO</div>
+        </div>
+
+        <div class="room-info">
+          👥 <span id="count1">12</span> pessoas
+        </div>
+
+        <button class="enter"
+          onclick="enterRoom('Música & Resenha', '12')">
+          Entrar
+        </button>
+
+      </div>
+
+
+      <div class="room">
+
+        <div class="room-top">
+          <div class="room-name">🎮 Games</div>
+          <div class="online">● AO VIVO</div>
+        </div>
+
+        <div class="room-info">
+          👥 <span id="count2">8</span> pessoas
+        </div>
+
+        <button class="enter"
+          onclick="enterRoom('Games', '8')">
+          Entrar
+        </button>
+
+      </div>
+
+
+      <div class="room">
+
+        <div class="room-top">
+          <div class="room-name">💬 Resenha Livre</div>
+          <div class="online">● AO VIVO</div>
+        </div>
+
+        <div class="room-info">
+          👥 <span id="count3">5</span> pessoas
+        </div>
+
+        <button class="enter"
+          onclick="enterRoom('Resenha Livre', '5')">
+          Entrar
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SHOP -->
+  <section id="shop" class="page">
+
+    <h1 class="title">Shop</h1>
+    <p class="subtitle">Itens do CloverSpace</p>
+
+    <div class="card">
+      🎁 Presente básico
+      <br><br>
+      <b>100 🪙</b>
+      <br><br>
+      <button class="primary" onclick="buyItem(100)">
+        Comprar
+      </button>
+    </div>
+
+    <div class="card">
+      💎 Presente premium
+      <br><br>
+      <b>500 🪙</b>
+      <br><br>
+      <button class="primary" onclick="buyItem(500)">
+        Comprar
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- TELA DA SALA -->
+  <section id="roomScreen" class="page room-screen">
+
+    <div class="room-header">
+
+      <button class="back" onclick="leaveRoom()">
+        ← Voltar
+      </button>
+
+      <div>
+        <h2 id="currentRoomName">Sala</h2>
+        <small style="color:#8f96a5;">
+          Sala de voz
+        </small>
+      </div>
+
+    </div>
+
+
+    <div class="banner">
+      <h2>🎙️ Sala ativa</h2>
+
+      <p>
+        Você entrou na sala.
+      </p>
+
+      <br>
+
+      <button class="primary" onclick="toggleMic()">
+        🎤 <span id="micText">Ativar microfone</span>
+      </button>
+    </div>
+
+
+    <h3>Participantes</h3>
+
+    <div class="members" id="members">
+
+      <div class="member">
+        <div class="avatar">EU</div>
+        Você
+      </div>
+
+      <div class="member">
+        <div class="avatar">CS</div>
+        CloverUser
+      </div>
+
+    </div>
+
+    <br>
+
+    <button
+      class="primary"
+      style="background:#d9534f;color:white;"
+      onclick="leaveRoom()">
+
+      🚪 Sair da sala
+
+    </button>
+
+  </section>
+
+
+  <!-- NAVEGAÇÃO -->
+  <nav class="bottom-nav">
+
+    <button class="nav-btn active"
+      onclick="openPage('home', this)">
+      <span class="icon">⌂</span>
+      Início
+    </button>
+
+    <button class="nav-btn"
+      onclick="openPage('private', this)">
+      <span class="icon">💬</span>
+      Privado
+    </button>
+
+    <button class="nav-btn"
+      onclick="openPage('groups', this)">
+      <span class="icon">👥</span>
+      Grupos
+    </button>
+
+    <button class="nav-btn"
+      onclick="openPage('rooms', this)">
+      <span class="icon">🎙️</span>
+      Salas
+    </button>
+
+    <button class="nav-btn"
+      onclick="openPage('shop', this)">
+      <span class="icon">🛍️</span>
+      Shop
+    </button>
+
+  </nav>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* =========================
+   NAVEGAÇÃO
+========================= */
+
+function openPage(pageId, button) {
+
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
+
+  const page = document.getElementById(pageId);
+
+  if (page) {
+    page.classList.add('active');
+  }
+
+  if (button) {
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    button.classList.add('active');
+  }
+
+  window.scrollTo(0, 0);
+}
+
+
+/* =========================
+   SALA
+========================= */
+
+let currentRoom = null;
+
+function enterRoom(name, people) {
+
+  currentRoom = name;
+
+  document.getElementById('currentRoomName').textContent = name;
+
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
+
+  document.getElementById('roomScreen').classList.add('active');
+
+  showToast('Você entrou em ' + name);
+
+  window.scrollTo(0, 0);
+}
+
+
+function leaveRoom() {
+
+  currentRoom = null;
+
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
+
+  document.getElementById('rooms').classList.add('active');
+
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  document.querySelectorAll('.nav-btn')[3].classList.add('active');
+
+  showToast('Você saiu da sala');
+
+  window.scrollTo(0, 0);
+}
+
+
+/* =========================
+   MICROFONE
+========================= */
+
+let micOn = false;
+
+function toggleMic() {
+
+  micOn = !micOn;
+
+  const text = document.getElementById('micText');
+
+  if (micOn) {
+
+    text.textContent = 'Microfone ativado';
+
+    showToast('🎤 Microfone ativado');
+
+  } else {
+
+    text.textContent = 'Ativar microfone';
+
+    showToast('🎤 Microfone desativado');
+
+  }
+}
+
+
+/* =========================
+   SHOP
+========================= */
+
+let coins = 1000;
+
+function buyItem(price) {
+
+  if (coins < price) {
+
+    showToast('❌ Moedas insuficientes');
+
+    return;
+  }
+
+  coins -= price;
+
+  document.getElementById('coinValue').textContent =
+    coins.toLocaleString('pt-BR');
+
+  showToast('🎁 Compra realizada!');
+
+}
+
+
+/* =========================
+   AVISOS
+========================= */
+
+function showToast(message) {
+
+  const toast = document.getElementById('toast');
+
+  toast.textContent = message;
+
+  toast.style.display = 'block';
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(() => {
+
+    toast.style.display = 'none';
+
+  }, 2200);
+
+}
+
+</script>
+
+</body>
+</html>
