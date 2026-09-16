@@ -1,32 +1,362 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Meet — CloverSpace</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body {
-            background: linear-gradient(135deg, #120720, #2d1b47, #1a0a2e);
-            min-height: 100vh;
-            color: white;
-            padding: 20px;
-        }
-        .back {
-            padding: 12px 20px;
-            background: rgba(167, 139, 250, 0.2);
-            border-radius: 10px;
-            cursor: pointer;
-            display: inline-block;
-            margin-bottom: 30px;
-        }
-        h1 { text-align: center; margin-top: 80px; font-size: 32px; }
-        .icon { font-size: 60px; text-align: center; margin-bottom: 20px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voice Meet — CloverSpace</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#101018;
+  color:white;
+  min-height:100vh;
+}
+header{
+  padding:20px;
+  text-align:center;
+  background:#181824;
+}
+h1{margin:0 0 6px}
+main{
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+}
+input,button{
+  width:100%;
+  padding:14px;
+  margin:7px 0;
+  border:0;
+  border-radius:12px;
+  font-size:16px;
+}
+input{background:#242432;color:white}
+button{
+  background:#7c5cff;
+  color:white;
+  font-weight:bold;
+}
+button:disabled{opacity:.5}
+#status{
+  margin:15px 0;
+  padding:14px;
+  border-radius:12px;
+  background:#20202c;
+  text-align:center;
+}
+#participants{
+  display:grid;
+  gap:10px;
+  margin-top:15px;
+}
+.person{
+  padding:15px;
+  border-radius:12px;
+  background:#20202c;
+}
+#mute{
+  background:#333344;
+}
+</style>
 </head>
+
 <body>
-    <div class="back" onclick="window.location.href='index.html'">← Voltar</div>
-    <div class="icon">🎙️</div>
-    <h1>Voice Meet</h1>
+
+<header>
+  <h1>🎙️ Voice Meet</h1>
+  <div>CloverSpace</div>
+</header>
+
+<main>
+
+  <input id="name" placeholder="Seu nome">
+
+  <input id="room" placeholder="Nome da sala">
+
+  <button id="join">Entrar na sala</button>
+
+  <button id="mute" disabled>🎤 Mutar microfone</button>
+
+  <div id="status">Não conectado</div>
+
+  <h2>Participantes</h2>
+  <div id="participants"></div>
+
+</main>
+
+<script>
+const nameInput = document.getElementById("name");
+const roomInput = document.getElementById("room");
+const joinBtn = document.getElementById("join");
+const muteBtn = document.getElementById("mute");
+const statusBox = document.getElementById("status");
+const participants = document.getElementById("participants");
+
+let ws;
+let localStream;
+let muted = false;
+
+const myId =
+  Math.random().toString(36).substring(2) +
+  Date.now().toString(36);
+
+const peers = {};
+
+function status(text){
+  statusBox.textContent = text;
+}
+
+function addAudio(id, stream){
+  let audio = document.getElementById("audio-" + id);
+
+  if(!audio){
+    audio = document.createElement("audio");
+    audio.id = "audio-" + id;
+    audio.autoplay = true;
+    audio.playsInline = true;
+    audio.style.display = "none";
+    document.body.appendChild(audio);
+  }
+
+  audio.srcObject = stream;
+}
+
+function send(data){
+  if(ws && ws.readyState === WebSocket.OPEN){
+    ws.send(JSON.stringify(data));
+  }
+}
+
+async function createPeer(remoteId, makeOffer){
+
+  if(peers[remoteId]){
+    return peers[remoteId];
+  }
+
+  const pc = new RTCPeerConnection({
+    iceServers:[
+      {urls:"stun:stun.l.google.com:19302"}
+    ]
+  });
+
+  peers[remoteId] = pc;
+
+  localStream.getTracks().forEach(track=>{
+    pc.addTrack(track, localStream);
+  });
+
+  pc.onicecandidate = event=>{
+    if(event.candidate){
+      send({
+        tipo:"sinal",
+        dados:{
+          kind:"ice",
+          from:myId,
+          to:remoteId,
+          candidate:event.candidate
+        }
+      });
+    }
+  };
+
+  pc.ontrack = event=>{
+    addAudio(remoteId,event.streams[0]);
+  };
+
+  pc.onconnectionstatechange = ()=>{
+    if(
+      pc.connectionState === "failed" ||
+      pc.connectionState === "closed"
+    ){
+      pc.close();
+      delete peers[remoteId];
+    }
+  };
+
+  if(makeOffer){
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+
+    send({
+      tipo:"sinal",
+      dados:{
+        kind:"offer",
+        from:myId,
+        to:remoteId,
+        desc:pc.localDescription
+      }
+    });
+  }
+
+  return pc;
+}
+
+joinBtn.onclick = async ()=>{
+
+  const name = nameInput.value.trim();
+  const room = roomInput.value.trim();
+
+  if(!name || !room){
+    alert("Digite seu nome e o nome da sala.");
+    return;
+  }
+
+  joinBtn.disabled = true;
+
+  try{
+    localStream =
+      await navigator.mediaDevices.getUserMedia({
+        audio:true
+      });
+  }catch(e){
+    alert("Permita o acesso ao microfone para entrar na chamada.");
+    joinBtn.disabled = false;
+    return;
+  }
+
+  const protocol =
+    location.protocol === "https:" ? "wss://" : "ws://";
+
+  ws = new WebSocket(protocol + location.host);
+
+  ws.onopen = ()=>{
+
+    status("Conectado à sala 🎙️");
+
+    send({
+      tipo:"entrar_sala",
+      sala:room,
+      usuario:name
+    });
+
+    setTimeout(()=>{
+      send({
+        tipo:"sinal",
+        dados:{
+          kind:"hello",
+          from:myId
+        }
+      });
+    },500);
+
+    muteBtn.disabled = false;
+  };
+
+  ws.onmessage = async event=>{
+
+    const msg = JSON.parse(event.data);
+
+    if(msg.tipo === "sala_atualizada"){
+      status(
+        "Sala conectada • " +
+        (msg.total || 1) +
+        " participante(s)"
+      );
+    }
+
+    if(msg.tipo !== "sinal"){
+      return;
+    }
+
+    const data = msg.dados;
+
+    if(data.to && data.to !== myId){
+      return;
+    }
+
+    if(data.kind === "hello"){
+
+      if(data.from !== myId){
+        await createPeer(data.from,true);
+      }
+
+      return;
+    }
+
+    if(data.kind === "offer"){
+
+      const pc = await createPeer(data.from,false);
+
+      await pc.setRemoteDescription(
+        new RTCSessionDescription(data.desc)
+      );
+
+      const answer = await pc.createAnswer();
+
+      await pc.setLocalDescription(answer);
+
+      send({
+        tipo:"sinal",
+        dados:{
+          kind:"answer",
+          from:myId,
+          to:data.from,
+          desc:pc.localDescription
+        }
+      });
+
+      return;
+    }
+
+    if(data.kind === "answer"){
+
+      const pc = peers[data.from];
+
+      if(pc){
+        await pc.setRemoteDescription(
+          new RTCSessionDescription(data.desc)
+        );
+      }
+
+      return;
+    }
+
+    if(data.kind === "ice"){
+
+      const pc = peers[data.from];
+
+      if(pc && data.candidate){
+
+        try{
+          await pc.addIceCandidate(
+            new RTCIceCandidate(data.candidate)
+          );
+        }catch(e){
+          console.log(e);
+        }
+      }
+    }
+  };
+
+  ws.onclose = ()=>{
+    status("Conexão encerrada");
+    muteBtn.disabled = true;
+  };
+
+  ws.onerror = ()=>{
+    status("Erro na conexão");
+  };
+};
+
+muteBtn.onclick = ()=>{
+
+  if(!localStream) return;
+
+  muted = !muted;
+
+  localStream.getAudioTracks().forEach(track=>{
+    track.enabled = !muted;
+  });
+
+  muteBtn.textContent =
+    muted
+    ? "🔇 Ativar microfone"
+    : "🎤 Mutar microfone";
+};
+</script>
+
 </body>
 </html>
