@@ -105,7 +105,7 @@
         }
         input[type="file"] { display: none; }
 
-        /* MODAL DE EDIÇÃO */
+        /* MODAL */
         .modal-fundo {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -149,7 +149,6 @@
             font-size: 15px;
             outline: none;
         }
-        .campo-input:focus { border-color: #a78bfa; }
         .botoes {
             display: flex;
             gap: 10px;
@@ -179,18 +178,18 @@
     </style>
 </head>
 <body>
-    <div class="back" onclick="window.location.href='index.html'">← Voltar</div>
+    <div class="back" id="btnVoltar">← Voltar</div>
     
     <div class="profile-card">
-        <!-- 📷 FOTO DE PERFIL CLICÁVEL -->
-        <div class="avatar-container" onclick="document.getElementById('fotoInput').click()">
+        <!-- 📷 FOTO DE PERFIL -->
+        <div class="avatar-container" id="avatarClicavel">
             <div class="avatar" id="avatarDisplay">
                 <span id="avatarPlaceholder">👤</span>
                 <img id="avatarImg" src="" alt="Foto de perfil">
             </div>
             <div class="avatar-overlay">📷 Trocar foto</div>
         </div>
-        <input type="file" id="fotoInput" accept="image/*" onchange="trocarFoto(event)">
+        <input type="file" id="fotoInput" accept="image/*">
         
         <div class="name-row">
             <span class="name" id="nomeExibicao">Naoki</span>
@@ -199,12 +198,12 @@
         <div class="zid" id="zidExibicao">Z-ID: #000001</div>
         <p class="bio" id="bioExibicao">Olá! Sou o Naoki, criador do CloverSpace. 🎉 Vamos construir juntos! ✨</p>
         
-        <button class="edit-btn" onclick="abrirEditar()">✏️ Editar Perfil</button>
+        <button class="edit-btn" id="btnEditar">✏️ Editar Perfil</button>
     </div>
 
-    <!-- ✏️ MODAL — EDITAR PERFIL -->
-    <div class="modal-fundo" id="modalEditar" onclick="fecharFora(event)">
-        <div class="modal-conteudo" onclick="event.stopPropagation()">
+    <!-- ✏️ MODAL -->
+    <div class="modal-fundo" id="modalEditar">
+        <div class="modal-conteudo">
             <h2 class="modal-titulo">✏️ Editar Perfil</h2>
 
             <div class="campo">
@@ -228,8 +227,8 @@
             </div>
 
             <div class="botoes">
-                <button class="btn-cancelar" onclick="fecharEditar()">Cancelar</button>
-                <button class="btn-salvar" onclick="salvarPerfil()">Salvar ✅</button>
+                <button class="btn-cancelar" id="btnCancelar">Cancelar</button>
+                <button class="btn-salvar" id="btnSalvar">Salvar ✅</button>
             </div>
         </div>
     </div>
@@ -239,80 +238,91 @@
         let perfil = {
             nome: "Naoki",
             zid: "#000001",
-            bio: "Olá! Sou o Naoki, criador do CloverSpace. 🎉 Vamos construir juntos! ✨",
-            foto: null
+            bio: "Olá! Sou o Naoki, criador do CloverSpace. 🎉 Vamos construir juntos! ✨"
         };
 
-        // 📷 TROCAR FOTO
-        function trocarFoto(event) {
-            const arquivo = event.target.files[0];
-            if (arquivo) {
-                const leitor = new FileReader();
-                leitor.onload = function(e) {
-                    document.getElementById('avatarImg').src = e.target.result;
-                    document.getElementById('avatarImg').style.display = 'block';
-                    document.getElementById('avatarPlaceholder').style.display = 'none';
-                    perfil.foto = e.target.result;
-                };
-                leitor.readAsDataURL(arquivo);
-            }
-        }
+        // ⏳ AGUARDAR PÁGINA CARREGAR COMPLETAMENTE
+        document.addEventListener('DOMContentLoaded', function() {
+            // Botão Voltar
+            document.getElementById('btnVoltar').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
 
-        // ✏️ ABRIR MODAL
-        function abrirEditar() {
-            document.getElementById('inputNome').value = perfil.nome;
-            document.getElementById('inputZid').value = perfil.zid;
-            document.getElementById('inputBio').value = perfil.bio;
-            document.getElementById('modalEditar').style.display = 'flex';
-        }
+            // 📷 Clicar na foto
+            document.getElementById('avatarClicavel').addEventListener('click', function() {
+                document.getElementById('fotoInput').click();
+            });
 
-        // ❌ FECHAR MODAL
-        function fecharEditar() {
-            document.getElementById('modalEditar').style.display = 'none';
-        }
+            // 📷 Escolher foto
+            document.getElementById('fotoInput').addEventListener('change', function(event) {
+                const arquivo = event.target.files[0];
+                if (arquivo) {
+                    const leitor = new FileReader();
+                    leitor.onload = function(e) {
+                        document.getElementById('avatarImg').src = e.target.result;
+                        document.getElementById('avatarImg').style.display = 'block';
+                        document.getElementById('avatarPlaceholder').style.display = 'none';
+                    };
+                    leitor.readAsDataURL(arquivo);
+                }
+            });
 
-        // 🔒 FECHAR AO CLICAR FORA
-        function fecharFora(event) {
-            if (event.target.id === 'modalEditar') {
-                fecharEditar();
-            }
-        }
+            // ✏️ Abrir editar
+            document.getElementById('btnEditar').addEventListener('click', function() {
+                document.getElementById('inputNome').value = perfil.nome;
+                document.getElementById('inputZid').value = perfil.zid;
+                document.getElementById('inputBio').value = perfil.bio;
+                document.getElementById('modalEditar').style.display = 'flex';
+            });
 
-        // ✅ SALVAR ALTERAÇÕES
-        function salvarPerfil() {
-            const novoNome = document.getElementById('inputNome').value.trim();
-            const novoZid = document.getElementById('inputZid').value.trim();
-            const novaBio = document.getElementById('inputBio').value.trim();
-            const novaFoto = document.getElementById('inputFoto').files[0];
+            // ❌ Cancelar
+            document.getElementById('btnCancelar').addEventListener('click', function() {
+                document.getElementById('modalEditar').style.display = 'none';
+            });
 
-            if (!novoNome || !novoZid) {
-                alert('⚠️ Preencha nome e Z-ID!');
-                return;
-            }
+            // ✅ Salvar
+            document.getElementById('btnSalvar').addEventListener('click', function() {
+                const novoNome = document.getElementById('inputNome').value.trim();
+                const novoZid = document.getElementById('inputZid').value.trim();
+                const novaBio = document.getElementById('inputBio').value.trim();
+                const novaFoto = document.getElementById('inputFoto').files[0];
 
-            // Atualizar foto se escolhida
-            if (novaFoto) {
-                const leitor = new FileReader();
-                leitor.onload = function(e) {
-                    document.getElementById('avatarImg').src = e.target.result;
-                    document.getElementById('avatarImg').style.display = 'block';
-                    document.getElementById('avatarPlaceholder').style.display = 'none';
-                };
-                leitor.readAsDataURL(novaFoto);
-            }
+                if (!novoNome || !novoZid) {
+                    alert('⚠️ Preencha nome e Z-ID!');
+                    return;
+                }
 
-            // Atualizar textos
-            perfil.nome = novoNome;
-            perfil.zid = novoZid;
-            perfil.bio = novaBio;
+                // Atualizar foto
+                if (novaFoto) {
+                    const leitor = new FileReader();
+                    leitor.onload = function(e) {
+                        document.getElementById('avatarImg').src = e.target.result;
+                        document.getElementById('avatarImg').style.display = 'block';
+                        document.getElementById('avatarPlaceholder').style.display = 'none';
+                    };
+                    leitor.readAsDataURL(novaFoto);
+                }
 
-            document.getElementById('nomeExibicao').textContent = novoNome;
-            document.getElementById('zidExibicao').textContent = 'Z-ID: ' + novoZid;
-            document.getElementById('bioExibicao').textContent = novaBio;
+                // Atualizar textos
+                perfil.nome = novoNome;
+                perfil.zid = novoZid;
+                perfil.bio = novaBio;
 
-            fecharEditar();
-            alert('✅ Perfil atualizado com sucesso!');
-        }
+                document.getElementById('nomeExibicao').textContent = novoNome;
+                document.getElementById('zidExibicao').textContent = 'Z-ID: ' + novoZid;
+                document.getElementById('bioExibicao').textContent = novaBio;
+
+                document.getElementById('modalEditar').style.display = 'none';
+                alert('✅ Perfil atualizado!');
+            });
+
+            // 🔒 Fechar ao clicar fora
+            document.getElementById('modalEditar').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>
